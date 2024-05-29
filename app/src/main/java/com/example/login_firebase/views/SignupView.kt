@@ -137,7 +137,7 @@ fun SignupButton(modifier: Modifier) {
 fun SignupIndicationText(modifier: Modifier) {
     Row(modifier = modifier.padding(bottom = 20.dp)) {
         Text(text = stringResource(id = R.string.IndicationLoginQuestion), modifier = Modifier.align(Alignment.CenterVertically))
-        TextButton(onClick = { }, modifier = Modifier.align(Alignment.CenterVertically)) {
+        TextButton(onClick = { }) {
             Text(text = stringResource(id = R.string.logIn), fontWeight = FontWeight.Bold, color = Color.Black)
         }
     }
