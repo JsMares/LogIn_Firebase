@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">LogIn_Firebase</string>
+
+    <string name="email">Correo Electronico</string>
+    <string name="password">Contraseña</string>
+    <string name="showPassword">Mostrar contraseña</string>
+    <string name="logInButton">ENTRAR</string>
+    <string name="IndicationRegisterQuestion">No tienes una cuenta?</string>
+    <string name="register">REGISTRARME</string>
 </resources>
