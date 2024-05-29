@@ -7,4 +7,8 @@
     <string name="logInButton">ENTRAR</string>
     <string name="IndicationRegisterQuestion">No tienes una cuenta?</string>
     <string name="register">REGISTRARME</string>
+    <string name="nameUser">Nombre</string>
+    <string name="lastNameUser">Apellidos</string>
+    <string name="logIn">Iniciar Sesión</string>
+    <string name="IndicationLoginQuestion">Ya tienes una cuenta?</string>
 </resources>
