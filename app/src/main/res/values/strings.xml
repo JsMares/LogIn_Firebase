@@ -11,4 +11,12 @@
     <string name="lastNameUser">Apellidos</string>
     <string name="logIn">Iniciar Sesión</string>
     <string name="IndicationLoginQuestion">Ya tienes una cuenta?</string>
+    <string name="HeaderHomeText">Perfil del Usuario</string>
+    <string name="IndicatorName">Nombre</string>
+    <string name="IndicatorEmail">Correo electronico</string>
+    <string name="IndicatorDate">Fecha de registro</string>
+    <string name="logoutButton">Cerrar sesion</string>
+
+    <string name="exampleName">Kenia Os</string>
+    <string name="exampleEmail">example@email.com</string>
 </resources>

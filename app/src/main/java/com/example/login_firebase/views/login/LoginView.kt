@@ -1,4 +1,4 @@
-package com.example.login_firebase.views
+package com.example.login_firebase.views.login
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
