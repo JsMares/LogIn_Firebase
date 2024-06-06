@@ -22,14 +22,17 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -65,10 +68,13 @@ fun HeaderLogin(modifier: Modifier) {
 
 @Composable
 fun BodyLogin(modifier: Modifier) {
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
     Column(modifier = modifier.fillMaxSize()) {
         HeaderLoginText(Modifier.align(Alignment.CenterHorizontally))
-        EmailTextField()
-        PasswordTextField()
+        EmailTextField(email) { email = it }
+        PasswordTextField(password) { password = it }
         ShowPasswordCheckBox()
     }
 }
@@ -92,8 +98,8 @@ fun HeaderLoginText(modifier: Modifier) {
 }
 
 @Composable
-fun EmailTextField() {
-    OutlinedTextField(value = "", onValueChange = { }, modifier = Modifier
+fun EmailTextField(email: String, onValueChange: (String) -> Unit) {
+    OutlinedTextField(value = email, onValueChange = { onValueChange(it) }, modifier = Modifier
         .fillMaxWidth()
         .padding(start = 12.dp, end = 12.dp, top = 25.dp),
         label = { Text(text = stringResource(id = R.string.email)) },
@@ -103,14 +109,15 @@ fun EmailTextField() {
 }
 
 @Composable
-fun PasswordTextField() {
+fun PasswordTextField(password: String, onValueChange: (String) -> Unit) {
     OutlinedTextField(
-        value = "",
-        onValueChange = { },
+        value = password,
+        onValueChange = { onValueChange(it) },
         modifier = Modifier
             .fillMaxWidth()
             .padding(start = 12.dp, end = 12.dp, top = 20.dp),
         label = { Text(text = stringResource(id = R.string.password)) },
+        visualTransformation = PasswordVisualTransformation(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock icon") }
     )

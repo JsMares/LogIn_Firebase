@@ -19,6 +19,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -58,6 +62,11 @@ fun SignupHeader(modifier: Modifier) {
 
 @Composable
 fun SignupBody(modifier: Modifier, navController: NavController) {
+    var nameUser by remember { mutableStateOf("") }
+    var lastNameUser by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(topStart = 80.dp))
@@ -65,24 +74,32 @@ fun SignupBody(modifier: Modifier, navController: NavController) {
             .background(Color.White)
     ) {
         FormOutlinedTextField(
+            value = nameUser,
+            onValueChange = { nameUser = it },
             label = stringResource(id = R.string.nameUser),
             icon = Icons.Default.Person,
             contentDescription = "PersonIcon",
             modifier = Modifier.padding(top = 80.dp)
         )
         FormOutlinedTextField(
+            value = lastNameUser,
+            onValueChange = { lastNameUser = it },
             label = stringResource(id = R.string.lastNameUser),
             icon = Icons.Default.Person,
             contentDescription = "PersonIcon",
             modifier = Modifier.padding(top = 20.dp)
         )
         FormOutlinedTextField(
+            value = email,
+            onValueChange = { email = it },
             label = stringResource(id = R.string.email),
             icon = Icons.Default.Email,
             contentDescription = "EmailIcon",
             modifier = Modifier.padding(top = 20.dp)
         )
         FormOutlinedTextField(
+            value = password,
+            onValueChange = { password = it },
             label = stringResource(id = R.string.password),
             icon = Icons.Default.Lock,
             contentDescription = "LockIcon",
@@ -97,14 +114,16 @@ fun SignupBody(modifier: Modifier, navController: NavController) {
 
 @Composable
 fun FormOutlinedTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
     label: String,
     icon: ImageVector,
     contentDescription: String,
     modifier: Modifier
 ) {
     OutlinedTextField(
-        value = "",
-        onValueChange = { },
+        value = value,
+        onValueChange = { onValueChange(it) },
         label = { Text(text = label) },
         leadingIcon = {
             Icon(
