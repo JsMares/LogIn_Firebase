@@ -30,18 +30,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.login_firebase.R
+import com.example.login_firebase.navigation.Routes
 
-@Preview(showBackground = true)
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavController) {
     Column(modifier = Modifier.fillMaxSize()) {
         HeaderLogin(modifier = Modifier.weight(1f))
         BodyLogin(modifier = Modifier.weight(2f))
-        TailLogin(modifier = Modifier.weight(1f))
+        TailLogin(modifier = Modifier.weight(1f), navController = navController)
     }
 }
 
@@ -74,9 +74,9 @@ fun BodyLogin(modifier: Modifier) {
 }
 
 @Composable
-fun TailLogin(modifier: Modifier) {
+fun TailLogin(modifier: Modifier, navController: NavController) {
     Box(modifier = modifier.fillMaxSize()) {
-        LogInButton(modifier = Modifier.align(Alignment.Center))
+        LogInButton(modifier = Modifier.align(Alignment.Center), navController)
         RegisterIndicationText(modifier = Modifier.align(Alignment.BottomCenter))
     }
 }
@@ -130,9 +130,9 @@ fun ShowPasswordCheckBox() {
 }
 
 @Composable
-fun LogInButton(modifier: Modifier) {
+fun LogInButton(modifier: Modifier, navController: NavController) {
     Button(
-        onClick = { }, modifier = modifier
+        onClick = { navController.navigate(Routes.ScreenHome.route) }, modifier = modifier
             .fillMaxWidth()
             .padding(start = 12.dp, end = 12.dp),
         shape = RoundedCornerShape(10.dp),
