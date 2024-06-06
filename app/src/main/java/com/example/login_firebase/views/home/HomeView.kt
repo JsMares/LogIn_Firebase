@@ -17,14 +17,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.login_firebase.R
+import com.example.login_firebase.navigation.Routes
 
-@Preview(showBackground = true)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavController) {
     Column(modifier = Modifier.fillMaxSize()) {
         HeaderHome()
         Spacer(modifier = Modifier.height(20.dp))
@@ -42,7 +42,7 @@ fun HomeScreen() {
         )
     }
     Box(modifier = Modifier.fillMaxSize()) {
-        LogoutButton(Modifier.align(Alignment.BottomCenter))
+        LogoutButton(Modifier.align(Alignment.BottomCenter), navController = navController)
     }
 }
 
@@ -65,9 +65,9 @@ fun DetailsText(indicator: String, value: String) {
 }
 
 @Composable
-fun LogoutButton(modifier: Modifier) {
+fun LogoutButton(modifier: Modifier, navController: NavController) {
     Button(
-        onClick = { },
+        onClick = { navController.navigate(Routes.ScreenLogin.route) },
         modifier = modifier
             .padding(12.dp)
             .fillMaxWidth(),

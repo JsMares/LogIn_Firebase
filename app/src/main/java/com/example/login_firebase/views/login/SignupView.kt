@@ -26,21 +26,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.login_firebase.R
+import com.example.login_firebase.navigation.Routes
 
-@Preview(showBackground = true)
 @Composable
-fun SignupScreen() {
+fun SignupScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
     ) {
         SignupHeader(modifier = Modifier.weight(1f))
-        SignupBody(modifier = Modifier.weight(3f))
+        SignupBody(modifier = Modifier.weight(3f), navController = navController)
     }
 }
 
@@ -57,7 +57,7 @@ fun SignupHeader(modifier: Modifier) {
 }
 
 @Composable
-fun SignupBody(modifier: Modifier) {
+fun SignupBody(modifier: Modifier, navController: NavController) {
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(topStart = 80.dp))
@@ -89,8 +89,8 @@ fun SignupBody(modifier: Modifier) {
             modifier = Modifier.padding(top = 20.dp)
         )
         Box(modifier = Modifier.fillMaxSize()) {
-            SignupButton(modifier = Modifier.align(Alignment.Center))
-            SignupIndicationText(modifier = Modifier.align(Alignment.BottomCenter))
+            SignupButton(modifier = Modifier.align(Alignment.Center), navController = navController)
+            SignupIndicationText(modifier = Modifier.align(Alignment.BottomCenter), navController = navController)
         }
     }
 }
@@ -119,9 +119,9 @@ fun FormOutlinedTextField(
 }
 
 @Composable
-fun SignupButton(modifier: Modifier) {
+fun SignupButton(modifier: Modifier, navController: NavController) {
     Button(
-        onClick = { },
+        onClick = { navController.navigate(Routes.ScreenHome.route) },
         modifier = modifier
             .fillMaxWidth()
             .padding(start = 12.dp, end = 12.dp),
@@ -134,10 +134,10 @@ fun SignupButton(modifier: Modifier) {
 }
 
 @Composable
-fun SignupIndicationText(modifier: Modifier) {
+fun SignupIndicationText(modifier: Modifier, navController: NavController) {
     Row(modifier = modifier.padding(bottom = 20.dp)) {
         Text(text = stringResource(id = R.string.IndicationLoginQuestion), modifier = Modifier.align(Alignment.CenterVertically))
-        TextButton(onClick = { }) {
+        TextButton(onClick = { navController.navigate(Routes.ScreenLogin.route) }) {
             Text(text = stringResource(id = R.string.logIn), fontWeight = FontWeight.Bold, color = Color.Black)
         }
     }

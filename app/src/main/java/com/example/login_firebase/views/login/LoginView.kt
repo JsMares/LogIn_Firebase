@@ -77,7 +77,7 @@ fun BodyLogin(modifier: Modifier) {
 fun TailLogin(modifier: Modifier, navController: NavController) {
     Box(modifier = modifier.fillMaxSize()) {
         LogInButton(modifier = Modifier.align(Alignment.Center), navController)
-        RegisterIndicationText(modifier = Modifier.align(Alignment.BottomCenter))
+        RegisterIndicationText(modifier = Modifier.align(Alignment.BottomCenter), navController = navController)
     }
 }
 
@@ -143,7 +143,7 @@ fun LogInButton(modifier: Modifier, navController: NavController) {
 }
 
 @Composable
-fun RegisterIndicationText(modifier: Modifier) {
+fun RegisterIndicationText(modifier: Modifier, navController: NavController) {
     Row(
         modifier = modifier.padding(bottom = 20.dp)
     ) {
@@ -151,7 +151,7 @@ fun RegisterIndicationText(modifier: Modifier) {
             text = stringResource(id = R.string.IndicationRegisterQuestion),
             modifier = Modifier.align(Alignment.CenterVertically)
         )
-        TextButton(onClick = {  }) {
+        TextButton(onClick = { navController.navigate(Routes.ScreenSignup.route) }) {
             Text(
                 text = stringResource(id = R.string.register),
                 color = Color.Black,
