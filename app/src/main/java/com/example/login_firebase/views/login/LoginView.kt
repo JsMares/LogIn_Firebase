@@ -1,5 +1,6 @@
 package com.example.login_firebase.views.login
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -38,13 +40,13 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.login_firebase.R
 import com.example.login_firebase.navigation.Routes
+import com.example.login_firebase.viewModel.LoginViewModel
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel) {
     Column(modifier = Modifier.fillMaxSize()) {
         HeaderLogin(modifier = Modifier.weight(1f))
-        BodyLogin(modifier = Modifier.weight(2f))
-        TailLogin(modifier = Modifier.weight(1f), navController = navController)
+        BodyLogin(modifier = Modifier.weight(2f), navController, loginViewModel)
     }
 }
 
@@ -67,7 +69,7 @@ fun HeaderLogin(modifier: Modifier) {
 }
 
 @Composable
-fun BodyLogin(modifier: Modifier) {
+fun BodyLogin(modifier: Modifier, navController: NavController, loginViewModel: LoginViewModel) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -76,14 +78,19 @@ fun BodyLogin(modifier: Modifier) {
         EmailTextField(email) { email = it }
         PasswordTextField(password) { password = it }
         ShowPasswordCheckBox()
-    }
-}
-
-@Composable
-fun TailLogin(modifier: Modifier, navController: NavController) {
-    Box(modifier = modifier.fillMaxSize()) {
-        LogInButton(modifier = Modifier.align(Alignment.Center), navController)
-        RegisterIndicationText(modifier = Modifier.align(Alignment.BottomCenter), navController = navController)
+        Box(modifier = modifier.fillMaxSize()) {
+            LogInButton(
+                modifier = Modifier.align(Alignment.Center),
+                navController = navController,
+                loginViewModel = loginViewModel,
+                email = email,
+                password = password
+            )
+            RegisterIndicationText(
+                modifier = Modifier.align(Alignment.BottomCenter),
+                navController = navController
+            )
+        }
     }
 }
 
@@ -137,9 +144,25 @@ fun ShowPasswordCheckBox() {
 }
 
 @Composable
-fun LogInButton(modifier: Modifier, navController: NavController) {
+fun LogInButton(
+    modifier: Modifier,
+    navController: NavController,
+    loginViewModel: LoginViewModel,
+    email: String,
+    password: String
+) {
+    val context = LocalContext.current
+    val message = stringResource(id = R.string.errorEmailPassword)
+
     Button(
-        onClick = { navController.navigate(Routes.ScreenHome.route) }, modifier = modifier
+        onClick = {
+            loginViewModel.login(email, password) { response ->
+                if (response == "OK")
+                    navController.navigate(Routes.ScreenHome.route)
+                else
+                    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            }
+        }, modifier = modifier
             .fillMaxWidth()
             .padding(start = 12.dp, end = 12.dp),
         shape = RoundedCornerShape(10.dp),

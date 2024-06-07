@@ -19,4 +19,6 @@
 
     <string name="exampleName">Kenia Os</string>
     <string name="exampleEmail">example@email.com</string>
+
+    <string name="errorEmailPassword">Correo o contrasñea incorrectos</string>
 </resources>
