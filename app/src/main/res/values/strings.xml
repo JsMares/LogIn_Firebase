@@ -9,7 +9,7 @@
     <string name="register">REGISTRARME</string>
     <string name="nameUser">Nombre</string>
     <string name="lastNameUser">Apellidos</string>
-    <string name="logIn">Iniciar Sesión</string>
+    <string name="logIn">INICIAR SESIÓN</string>
     <string name="IndicationLoginQuestion">Ya tienes una cuenta?</string>
     <string name="HeaderHomeText">Perfil del Usuario</string>
     <string name="IndicatorName">Nombre</string>
@@ -20,5 +20,7 @@
     <string name="exampleName">Kenia Os</string>
     <string name="exampleEmail">example@email.com</string>
 
-    <string name="errorEmailPassword">Correo o contrasñea incorrectos</string>
+    <string name="newUser">¡USUARIO REGISTRADO!</string>
+    <string name="errorSignUp">Ocurrió un error al crear la cuenta</string>
+    <string name="errorEmailPassword">Correo o contraseña incorrectos</string>
 </resources>

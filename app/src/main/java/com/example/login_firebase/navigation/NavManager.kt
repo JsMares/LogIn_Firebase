@@ -15,7 +15,7 @@ fun NavManager(loginViewModel: LoginViewModel) {
 
     NavHost(navController = navController, startDestination = Routes.ScreenLogin.route) {
         composable(Routes.ScreenLogin.route) { LoginScreen(navController = navController, loginViewModel = loginViewModel) }
-        composable(Routes.ScreenSignup.route) { SignupScreen(navController = navController) }
+        composable(Routes.ScreenSignup.route) { SignupScreen(navController = navController, loginViewModel = loginViewModel) }
         composable(Routes.ScreenHome.route) { HomeScreen(navController = navController) }
     }
 }

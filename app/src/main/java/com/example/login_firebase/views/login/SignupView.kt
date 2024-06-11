@@ -1,5 +1,6 @@
 package com.example.login_firebase.views.login
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -35,16 +37,21 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.login_firebase.R
 import com.example.login_firebase.navigation.Routes
+import com.example.login_firebase.viewModel.LoginViewModel
 
 @Composable
-fun SignupScreen(navController: NavController) {
+fun SignupScreen(navController: NavController, loginViewModel: LoginViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Black)
     ) {
         SignupHeader(modifier = Modifier.weight(1f))
-        SignupBody(modifier = Modifier.weight(3f), navController = navController)
+        SignupBody(
+            modifier = Modifier.weight(3f),
+            navController = navController,
+            loginViewModel = loginViewModel
+        )
     }
 }
 
@@ -61,7 +68,7 @@ fun SignupHeader(modifier: Modifier) {
 }
 
 @Composable
-fun SignupBody(modifier: Modifier, navController: NavController) {
+fun SignupBody(modifier: Modifier, navController: NavController, loginViewModel: LoginViewModel) {
     var nameUser by remember { mutableStateOf("") }
     var lastNameUser by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -106,8 +113,19 @@ fun SignupBody(modifier: Modifier, navController: NavController) {
             modifier = Modifier.padding(top = 20.dp)
         )
         Box(modifier = Modifier.fillMaxSize()) {
-            SignupButton(modifier = Modifier.align(Alignment.Center), navController = navController)
-            SignupIndicationText(modifier = Modifier.align(Alignment.BottomCenter), navController = navController)
+            SignupButton(
+                modifier = Modifier.align(Alignment.Center),
+                navController = navController,
+                loginViewModel = loginViewModel,
+                email = email,
+                password = password,
+                userName = nameUser,
+                lastNameUser = lastNameUser
+            )
+            SignupIndicationText(
+                modifier = Modifier.align(Alignment.BottomCenter),
+                navController = navController
+            )
         }
     }
 }
@@ -138,15 +156,35 @@ fun FormOutlinedTextField(
 }
 
 @Composable
-fun SignupButton(modifier: Modifier, navController: NavController) {
+fun SignupButton(
+    modifier: Modifier,
+    navController: NavController,
+    loginViewModel: LoginViewModel,
+    email: String,
+    password: String,
+    userName: String,
+    lastNameUser: String
+) {
+    val context = LocalContext.current
+    val welcome = stringResource(id = R.string.newUser)
+    val error = stringResource(id = R.string.errorSignUp)
+
     Button(
-        onClick = { navController.navigate(Routes.ScreenHome.route) },
+        onClick = {
+            loginViewModel.createUser(email, password, userName, lastNameUser) { response ->
+                if (response == "OK") {
+                    Toast.makeText(context, welcome, Toast.LENGTH_SHORT).show()
+                    navController.navigate(Routes.ScreenHome.route)
+                } else
+                    Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+            }
+        },
         modifier = modifier
             .fillMaxWidth()
             .padding(start = 12.dp, end = 12.dp),
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(Color.Black)
-        )
+    )
     {
         Text(text = stringResource(id = R.string.register))
     }
@@ -155,9 +193,16 @@ fun SignupButton(modifier: Modifier, navController: NavController) {
 @Composable
 fun SignupIndicationText(modifier: Modifier, navController: NavController) {
     Row(modifier = modifier.padding(bottom = 20.dp)) {
-        Text(text = stringResource(id = R.string.IndicationLoginQuestion), modifier = Modifier.align(Alignment.CenterVertically))
+        Text(
+            text = stringResource(id = R.string.IndicationLoginQuestion),
+            modifier = Modifier.align(Alignment.CenterVertically)
+        )
         TextButton(onClick = { navController.navigate(Routes.ScreenLogin.route) }) {
-            Text(text = stringResource(id = R.string.logIn), fontWeight = FontWeight.Bold, color = Color.Black)
+            Text(
+                text = stringResource(id = R.string.logIn),
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            )
         }
     }
 }
