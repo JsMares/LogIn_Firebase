@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -135,7 +136,15 @@ fun ShowPasswordCheckBox() {
     val checkedState = remember { mutableStateOf(false) }
 
     Row {
-        Checkbox(checked = checkedState.value, onCheckedChange = { checkedState.value = it })
+        Checkbox(
+            checked = checkedState.value,
+            onCheckedChange = { checkedState.value = it },
+            colors = CheckboxDefaults.colors(
+                checkedColor = Color.Black,
+                uncheckedColor = Color.Black,
+                checkmarkColor = Color.White
+            )
+        )
         Text(
             text = stringResource(id = R.string.showPassword),
             modifier = Modifier.align(Alignment.CenterVertically)
