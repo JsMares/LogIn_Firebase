@@ -21,10 +21,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.login_firebase.R
-import com.example.login_firebase.navigation.Routes
+import com.example.login_firebase.viewModel.HomeViewModel
 
 @Composable
-fun HomeScreen(navController: NavController) {
+fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel) {
     Column(modifier = Modifier.fillMaxSize()) {
         HeaderHome()
         Spacer(modifier = Modifier.height(20.dp))
@@ -42,7 +42,11 @@ fun HomeScreen(navController: NavController) {
         )
     }
     Box(modifier = Modifier.fillMaxSize()) {
-        LogoutButton(Modifier.align(Alignment.BottomCenter), navController = navController)
+        LogoutButton(
+            Modifier.align(Alignment.BottomCenter),
+            navController = navController,
+            homeViewModel = homeViewModel
+        )
     }
 }
 
@@ -65,9 +69,12 @@ fun DetailsText(indicator: String, value: String) {
 }
 
 @Composable
-fun LogoutButton(modifier: Modifier, navController: NavController) {
+fun LogoutButton(modifier: Modifier, navController: NavController, homeViewModel: HomeViewModel) {
     Button(
-        onClick = { navController.navigate(Routes.ScreenLogin.route) },
+        onClick = {
+            homeViewModel.signOut()
+            navController.popBackStack()
+        },
         modifier = modifier
             .padding(12.dp)
             .fillMaxWidth(),

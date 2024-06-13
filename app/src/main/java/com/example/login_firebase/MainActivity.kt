@@ -10,6 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.example.login_firebase.navigation.NavManager
 import com.example.login_firebase.ui.theme.LogIn_FirebaseTheme
+import com.example.login_firebase.viewModel.HomeViewModel
 import com.example.login_firebase.viewModel.LoginViewModel
 
 class MainActivity : ComponentActivity() {
@@ -17,6 +18,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val loginViewModel: LoginViewModel by viewModels()
+        val homeViewModel: HomeViewModel by viewModels()
 
         setContent {
             LogIn_FirebaseTheme {
@@ -25,7 +27,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    NavManager(loginViewModel = loginViewModel)
+                    NavManager(loginViewModel = loginViewModel, homeViewModel = homeViewModel)
                 }
             }
         }
