@@ -9,12 +9,14 @@ import com.example.login_firebase.viewModel.LoginViewModel
 import com.example.login_firebase.views.home.HomeScreen
 import com.example.login_firebase.views.login.LoginScreen
 import com.example.login_firebase.views.login.SignupScreen
+import com.example.login_firebase.views.login.SplashScreen
 
 @Composable
 fun NavManager(loginViewModel: LoginViewModel, homeViewModel: HomeViewModel) {
     val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = Routes.ScreenLogin.route) {
+    NavHost(navController = navController, startDestination = Routes.ScreenSplash.route) {
+        composable(Routes.ScreenSplash.route) { SplashScreen(navController = navController) }
         composable(Routes.ScreenLogin.route) { LoginScreen(navController = navController, loginViewModel = loginViewModel) }
         composable(Routes.ScreenSignup.route) { SignupScreen(navController = navController, loginViewModel = loginViewModel) }
         composable(Routes.ScreenHome.route) { HomeScreen(navController = navController, homeViewModel = homeViewModel) }

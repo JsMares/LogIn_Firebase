@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -36,6 +37,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -71,14 +73,16 @@ fun HeaderLogin(modifier: Modifier) {
 
 @Composable
 fun BodyLogin(modifier: Modifier, navController: NavController, loginViewModel: LoginViewModel) {
+    val showPassword by loginViewModel.showPassword.observeAsState(false)
+
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     Column(modifier = modifier.fillMaxSize()) {
         HeaderLoginText(Modifier.align(Alignment.CenterHorizontally))
         EmailTextField(email) { email = it }
-        PasswordTextField(password) { password = it }
-        ShowPasswordCheckBox()
+        PasswordTextField(password, showPassword) { password = it }
+        ShowPasswordCheckBox(loginViewModel)
         Box(modifier = modifier.fillMaxSize()) {
             LogInButton(
                 modifier = Modifier.align(Alignment.Center),
@@ -117,7 +121,7 @@ fun EmailTextField(email: String, onValueChange: (String) -> Unit) {
 }
 
 @Composable
-fun PasswordTextField(password: String, onValueChange: (String) -> Unit) {
+fun PasswordTextField(password: String, show: Boolean, onValueChange: (String) -> Unit) {
     OutlinedTextField(
         value = password,
         onValueChange = { onValueChange(it) },
@@ -125,20 +129,21 @@ fun PasswordTextField(password: String, onValueChange: (String) -> Unit) {
             .fillMaxWidth()
             .padding(start = 12.dp, end = 12.dp, top = 20.dp),
         label = { Text(text = stringResource(id = R.string.password)) },
-        visualTransformation = PasswordVisualTransformation(),
+        visualTransformation = if (!show) PasswordVisualTransformation() else VisualTransformation.None,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         leadingIcon = { Icon(imageVector = Icons.Default.Lock, contentDescription = "Lock icon") }
     )
 }
 
 @Composable
-fun ShowPasswordCheckBox() {
-    val checkedState = remember { mutableStateOf(false) }
+fun ShowPasswordCheckBox(loginViewModel: LoginViewModel) {
+    //val checkedState = remember { mutableStateOf(false) }
+    val checkedState by loginViewModel.showPassword.observeAsState(false)
 
     Row {
         Checkbox(
-            checked = checkedState.value,
-            onCheckedChange = { checkedState.value = it },
+            checked = checkedState,
+            onCheckedChange = { if (it) loginViewModel.onShowPassword() else loginViewModel.onHidePassword() },
             colors = CheckboxDefaults.colors(
                 checkedColor = Color.Black,
                 uncheckedColor = Color.Black,

@@ -1,6 +1,8 @@
 package com.example.login_firebase.viewModel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.login_firebase.models.UserModel
@@ -13,6 +15,17 @@ import kotlinx.coroutines.launch
 class LoginViewModel: ViewModel() {
 
     private val auth: FirebaseAuth = Firebase.auth
+
+    private val _showPassword = MutableLiveData<Boolean>()
+    val showPassword: LiveData<Boolean> = _showPassword
+
+    fun onShowPassword() {
+        _showPassword.value = true
+    }
+
+    fun onHidePassword() {
+     _showPassword.value = false
+    }
 
     fun login(email: String, password: String, onSuccess: (String) -> Unit) {
         viewModelScope.launch {
