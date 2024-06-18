@@ -171,8 +171,8 @@ fun LogInButton(
     Button(
         onClick = {
             loginViewModel.login(email, password) { response ->
-                if (response == "OK")
-                    navController.navigate(Routes.ScreenHome.route)
+                if (response != "ERROR")
+                    navController.navigate(Routes.ScreenHome.createRoute(response))
                 else
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             }

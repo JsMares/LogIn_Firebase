@@ -24,13 +24,13 @@ import com.example.login_firebase.R
 import com.example.login_firebase.viewModel.HomeViewModel
 
 @Composable
-fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel) {
+fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel, idUser: String) {
     Column(modifier = Modifier.fillMaxSize()) {
         HeaderHome()
         Spacer(modifier = Modifier.height(20.dp))
         DetailsText(
             indicator = stringResource(id = R.string.IndicatorName),
-            value = "Jonathan Soto"
+            value = idUser
         )
         DetailsText(
             indicator = stringResource(id = R.string.IndicatorEmail),

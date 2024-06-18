@@ -4,5 +4,7 @@ sealed class Routes(val route: String) {
     data object ScreenSplash: Routes("screenSplash")
     data object ScreenLogin: Routes("screenLogin")
     data object ScreenSignup: Routes("screenSignup")
-    data object ScreenHome: Routes("screenHome")
+    data object ScreenHome: Routes("screenHome/{idUser}") {
+        fun createRoute(idUser: String): String = "screenHome/$idUser"
+    }
 }

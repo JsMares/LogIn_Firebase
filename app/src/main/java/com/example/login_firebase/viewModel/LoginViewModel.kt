@@ -32,8 +32,10 @@ class LoginViewModel: ViewModel() {
             try {
                 auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener {  task ->
+                        val userId = auth.currentUser?.uid
+
                         if (task.isSuccessful) {
-                            onSuccess("OK")
+                            onSuccess(userId.toString())
                         } else {
                             onSuccess("ERROR")
                         }

@@ -17,8 +17,24 @@ fun NavManager(loginViewModel: LoginViewModel, homeViewModel: HomeViewModel) {
 
     NavHost(navController = navController, startDestination = Routes.ScreenSplash.route) {
         composable(Routes.ScreenSplash.route) { SplashScreen(navController = navController) }
-        composable(Routes.ScreenLogin.route) { LoginScreen(navController = navController, loginViewModel = loginViewModel) }
-        composable(Routes.ScreenSignup.route) { SignupScreen(navController = navController, loginViewModel = loginViewModel) }
-        composable(Routes.ScreenHome.route) { HomeScreen(navController = navController, homeViewModel = homeViewModel) }
+        composable(Routes.ScreenLogin.route) {
+            LoginScreen(
+                navController = navController,
+                loginViewModel = loginViewModel
+            )
+        }
+        composable(Routes.ScreenSignup.route) {
+            SignupScreen(
+                navController = navController,
+                loginViewModel = loginViewModel
+            )
+        }
+        composable(Routes.ScreenHome.route) { backStackEntry ->
+            HomeScreen(
+                navController = navController,
+                homeViewModel = homeViewModel,
+                idUser = backStackEntry.arguments?.getString("idUser").orEmpty()
+            )
+        }
     }
 }
