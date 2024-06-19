@@ -12,6 +12,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,22 +26,25 @@ import com.example.login_firebase.viewModel.HomeViewModel
 
 @Composable
 fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel, idUser: String) {
+    LaunchedEffect(Unit) {
+        homeViewModel.getUserById(idUser)
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
+        val state = homeViewModel.state
+
         HeaderHome()
         Spacer(modifier = Modifier.height(20.dp))
         DetailsText(
             indicator = stringResource(id = R.string.IndicatorName),
-            value = idUser
+            value = "${state.userName} ${state.lastName}"
         )
         DetailsText(
             indicator = stringResource(id = R.string.IndicatorEmail),
-            value = "jsmares0105@gmail.com"
-        )
-        DetailsText(
-            indicator = stringResource(id = R.string.IndicatorDate),
-            value = "04/06/2024"
+            value = state.email
         )
     }
+
     Box(modifier = Modifier.fillMaxSize()) {
         LogoutButton(
             Modifier.align(Alignment.BottomCenter),

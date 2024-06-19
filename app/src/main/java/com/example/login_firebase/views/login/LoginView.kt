@@ -171,7 +171,7 @@ fun LogInButton(
     Button(
         onClick = {
             loginViewModel.login(email, password) { response ->
-                if (response != "ERROR")
+                if (response != "ERROR" && response != "DOCUMENT_NOT_FOUND")
                     navController.navigate(Routes.ScreenHome.createRoute(response))
                 else
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
