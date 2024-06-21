@@ -53,8 +53,10 @@ class LoginViewModel: ViewModel() {
                 auth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
+                            val userId = auth.currentUser?.uid
+
                             saveUser(userName, lastNameUser)
-                            onSuccess("OK")
+                            onSuccess(userId.toString())
                         } else {
                             onSuccess("ERROR")
                         }

@@ -172,9 +172,9 @@ fun SignupButton(
     Button(
         onClick = {
             loginViewModel.createUser(email, password, userName, lastNameUser) { response ->
-                if (response == "OK") {
+                if (response != "ERROR") {
                     Toast.makeText(context, welcome, Toast.LENGTH_SHORT).show()
-                    navController.navigate(Routes.ScreenHome.route)
+                    navController.navigate(Routes.ScreenHome.createRoute(response))
                 } else
                     Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
             }
