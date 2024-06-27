@@ -42,8 +42,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.login_firebase.R
+import com.example.login_firebase.StoreUserData
 import com.example.login_firebase.navigation.Routes
 import com.example.login_firebase.viewModel.LoginViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun LoginScreen(navController: NavController, loginViewModel: LoginViewModel) {
@@ -166,13 +171,20 @@ fun LogInButton(
     password: String
 ) {
     val context = LocalContext.current
+    val dataStore = StoreUserData(context = context)
     val message = stringResource(id = R.string.errorEmailPassword)
 
     Button(
         onClick = {
             loginViewModel.login(email, password) { response ->
-                if (response != "ERROR" && response != "DOCUMENT_NOT_FOUND")
-                    navController.navigate(Routes.ScreenHome.createRoute(response))
+                if (response != "ERROR" && response != "DOCUMENT_NOT_FOUND"){
+                    CoroutineScope(Dispatchers.IO).launch {
+                        dataStore.saveUser(idUser = response)
+                        withContext(Dispatchers.Main) {
+                            navController.navigate(Routes.ScreenHome.createRoute(response))
+                        }
+                    }
+                }
                 else
                     Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
             }

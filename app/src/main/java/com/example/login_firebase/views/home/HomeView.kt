@@ -13,21 +13,35 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.login_firebase.R
+import com.example.login_firebase.StoreUserData
 import com.example.login_firebase.viewModel.HomeViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun HomeScreen(navController: NavController, homeViewModel: HomeViewModel, idUser: String) {
-    LaunchedEffect(Unit) {
-        homeViewModel.getUserById(idUser)
+    val context = LocalContext.current
+    val dataStore = StoreUserData(context = context)
+    val store = dataStore.getUserData.collectAsState(initial = null)
+
+    LaunchedEffect(store.value) {
+        val userId = store.value ?: idUser
+        if (userId != "{idUser}") {
+            homeViewModel.getUserById(userId)
+        }
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -74,10 +88,18 @@ fun DetailsText(indicator: String, value: String) {
 
 @Composable
 fun LogoutButton(modifier: Modifier, navController: NavController, homeViewModel: HomeViewModel) {
+    val context = LocalContext.current
+    val dataStore = StoreUserData(context)
+
     Button(
         onClick = {
-            homeViewModel.signOut()
-            navController.popBackStack()
+            CoroutineScope(Dispatchers.IO).launch {
+                dataStore.saveUser(idUser = "")
+                withContext(Dispatchers.Main) {
+                    homeViewModel.signOut()
+                    navController.popBackStack()
+                }
+            }
         },
         modifier = modifier
             .padding(12.dp)

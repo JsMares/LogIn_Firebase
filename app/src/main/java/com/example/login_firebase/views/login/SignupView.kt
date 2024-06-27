@@ -36,8 +36,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.login_firebase.R
+import com.example.login_firebase.StoreUserData
 import com.example.login_firebase.navigation.Routes
 import com.example.login_firebase.viewModel.LoginViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun SignupScreen(navController: NavController, loginViewModel: LoginViewModel) {
@@ -169,12 +174,20 @@ fun SignupButton(
     val welcome = stringResource(id = R.string.newUser)
     val error = stringResource(id = R.string.errorSignUp)
 
+    val dataStore = StoreUserData(context = context)
+
     Button(
         onClick = {
             loginViewModel.createUser(email, password, userName, lastNameUser) { response ->
                 if (response != "ERROR") {
                     Toast.makeText(context, welcome, Toast.LENGTH_SHORT).show()
-                    navController.navigate(Routes.ScreenHome.createRoute(response))
+                    //navController.navigate(Routes.ScreenHome.createRoute(response))
+                    CoroutineScope(Dispatchers.IO).launch {
+                        dataStore.saveUser(idUser = response)
+                        withContext(Dispatchers.Main) {
+                            navController.navigate(Routes.ScreenHome.createRoute(response))
+                        }
+                    }
                 } else
                     Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
             }
